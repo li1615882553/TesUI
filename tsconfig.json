@@ -9,11 +9,11 @@
       "dom",
       "es2017"
     ],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "moduleResolution": "node",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "strictPropertyInitialization": false,
+    // "strict": true,
     "skipLibCheck": true,
     "noImplicitAny": false,
     "paths": { //路劲别名配置
