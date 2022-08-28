@@ -41,7 +41,7 @@ class Button extends Control<IButtonProps> {
 
   protected render() {
     const {
-      className, style, loading, disabled, type, shape, icon, plain, size, round, tail
+      className, style, loading, disabled, type, shape, icon, plain, size, round, tail, ...otherProps
     } = this.props;
     const preCls = "t-button";
     const btnCls = {
@@ -62,6 +62,7 @@ class Button extends Control<IButtonProps> {
         style={style}
         disabled={disabled}
         onClick={this.onClick}
+        {...otherProps}
       >
         {!!loading ? <i className="iconfont icon-loading"></i> : ""}
         {!tail && !loading && icon ? <i className={`iconfont ${icon}`}></i> : null}

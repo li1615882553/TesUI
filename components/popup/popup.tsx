@@ -1,7 +1,8 @@
 import { IBaseComponent } from "../template/component"
-import { Control, Component, VNode } from "tes-work";
+import { Control, Component, VNode, nextTick } from "tes-work";
 import * as DOM from "../ux/dom/index";
 import pin, { alignPos } from "../ux/align/align";
+import { isArray } from "@component/utils/array/array";
 
 export interface IPopupProps extends IBaseComponent {
   /**
@@ -23,7 +24,9 @@ export interface IPopupProps extends IBaseComponent {
   | "focus" | null;
   /**控制方式 event按照event方式自动控制显隐, visible按照visible相应式控制显隐 */
   type?: "event" | "visible";
-  /**是否可见 */
+  /**是否可用 */
+  disabled?: boolean;
+  /**当type为'visible'有效 是否可见 */
   visible?: boolean;
   /**切换动画的毫秒数 */
   duration?: number;
@@ -39,6 +42,10 @@ export interface IPopupProps extends IBaseComponent {
   pinTarget?: Document | HTMLElement | DOM.Rect | null;
   /**元素的外边距 */
   margin?: number;
+  /**是否将弹窗弹到body元素 */
+  appendToBody?: boolean;
+  /**气泡框内容 */
+  content?: VNode | VNode[];
   /**变化回调 */
   onChange?: (visible: boolean) => void;
 }
@@ -48,12 +55,15 @@ class Popup extends Control<IPopupProps> {
   _align: alignPos;
   _pinTarget: Document | HTMLElement | DOM.Rect | null;
   curVisible: boolean = false;
+  popContent: VNode;
+  hasAppendToBody: boolean = false;
 
   /**
    * 切换显示或隐藏当前浮层
    * @param value 如果为true,强制显示,如果为false则强制隐藏
    */
   toggle(value?: boolean) {
+    if (this.props.disabled) return;
     const { autoHide = true, onChange, animatin = "height", duration = 100 } = this.props;
     if (this.curVisible === value) {
       return;
@@ -64,10 +74,10 @@ class Popup extends Control<IPopupProps> {
     }
     if (!value) {
       autoHide && DOM.off(document, "pointerdown", this.handleDocumentPointerDown, this);
-      DOM.hide(this.elem, animatin, undefined, duration, undefined);
+      DOM.hide(this.popContent.result as HTMLElement, animatin, undefined, duration, undefined);
     } else {
       autoHide && DOM.on(document, "pointerdown", this.handleDocumentPointerDown, this);
-      DOM.show(this.elem, animatin, undefined, duration, undefined);
+      DOM.show(this.popContent.result as HTMLElement, animatin, undefined, duration, undefined);
       this.realign();
     }
   }
@@ -165,15 +175,15 @@ class Popup extends Control<IPopupProps> {
           }
         }
         action[event] = {
-          "onPointerMove": (e: MouseEvent) => {
-            this._pinTarget = {
-              x: e.pageX,
-              y: e.pageY,
-              width: 16,
-              height: 16
-            }
-            this.realign();
-          },
+          // "onPointerMove": (e: MouseEvent) => {
+          //   this._pinTarget = {
+          //     x: e.pageX,
+          //     y: e.pageY,
+          //     width: 16,
+          //     height: 16
+          //   }
+          //   this.realign();
+          // },
           "onPointerEnter": delayShow,
           "onPointerLeave": delayHide
         }
@@ -185,17 +195,54 @@ class Popup extends Control<IPopupProps> {
    * 重新对齐浮层的位置
    */
   realign() {
-    const { align = "lr-tt", margin = 5 } = this.props;
-    pin(this.elem, this.$parent.elem, align, margin, this.elem.ownerDocument);
+    const { align = "lr-tt", margin = 5, appendToBody = true } = this.props;
+    appendToBody && pin(this.popContent.result as HTMLElement, this.elem, align, margin, this.elem.ownerDocument);
+  }
+
+  execStyle() {
+    const { style } = this.props;
+    let _style = {};
+    if(typeof(style)=='string'){
+      style.split(";").forEach((prop) => {
+        if(!prop) return ;
+        const [key, value] = prop.split(":");
+        _style[key] = value; 
+      })
+    }else{
+      _style = style;
+    }
+    _style["display"] = "none";
+    return Object.keys(_style).reduce((total, prop)=> {
+      return total + `${prop}:${_style[prop]};`
+    }, "");
   }
 
   protected render() {
-    const { className, style } = this.props;
-    return VNode.create("div", { className, style, ...this.getTargetTriggerAction() }, this.$children)
+    const lastPopContent = this.popContent;
+    const { type, className, style, content, appendToBody = true } = this.props;
+    this.popContent = VNode.create("div", { className, "style":this.execStyle() }, content);
+    if (type === "visible") {
+      return this.popContent;
+    } else {
+      let child: VNode = isArray(this.$children) ? this.$children[0] : this.$children;
+      if (appendToBody) {
+        if (!this.hasAppendToBody) {
+          VNode.sync(this.popContent);
+          document.body.appendChild(this.popContent.result instanceof Control ? this.popContent.result.elem : this.popContent.result);
+          this.hasAppendToBody = !this.hasAppendToBody;
+        } else {
+          VNode.sync(this.popContent, lastPopContent);
+        }
+        return Control.$cloneNode(child, { ...this.getTargetTriggerAction() })
+      } else {
+        return Control.$cloneNode(child, { ...this.getTargetTriggerAction() }, this.popContent)
+      }
+    }
   }
 
   protected componentWillMount(): void {
-    const { type } = this.props;
+    const { type, className, style, content } = this.props;
+    this.popContent = VNode.create("div", { className, style }, content)
     if (type === "visible") {
       this.$watch("props.visible", this.toggle)
     }
