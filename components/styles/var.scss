@@ -52,6 +52,7 @@ $border-base: $border-width $border-style $border-color;
 $border-radius: .2rem !default;
 $border-radius-large: .25rem !default;
 $border-radius-small: .15rem !default;
+$border-radius-circle: 100% !default;
 
 //字体大小
 $font-size: 14px !default;
@@ -176,3 +177,15 @@ $select-group-font-size: 12px !default;
 $tag-font-size: 12px !default;
 $tag-border-radius: 4px !default;
 $tag-padding: 0 10px !default;
+
+
+//switch
+$switch-font-size: 12px !default;
+$switch-height: 20px !default;
+$switch-width: 40px !default;
+$switch-on-color: $primary-color !default;
+$switch-off-color: $border-color !default;
+
+$switch-core-border-radius: 10px !default;
+
+$switch-button-size: 16px;
