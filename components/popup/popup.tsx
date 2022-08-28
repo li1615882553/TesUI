@@ -211,7 +211,7 @@ class Popup extends Control<IPopupProps> {
     }else{
       _style = style;
     }
-    _style["display"] = "none";
+    !_style["display"] && (_style["display"] = "none");
     return Object.keys(_style).reduce((total, prop)=> {
       return total + `${prop}:${_style[prop]};`
     }, "");
