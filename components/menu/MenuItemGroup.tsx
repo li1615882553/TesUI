@@ -10,3 +10,5 @@ export interface IMenuGroupProps extends IBaseComponent{
 export class MenuGroup extends Control<IMenuGroupProps>{
 
 }
+
+export default MenuGroup;

@@ -15,7 +15,7 @@ class Panel extends Control {
   render() {
     return (
       <div>
-        <ToolTip content="点击关闭 tooltip 功能" effect="light" style="border:1px solid #00ff00;">
+        <ToolTip content="点击关闭 tooltip 功能" effect="light" style="border:1px solid #00ff00;" disabled>
           <Button>这是一个包在tooltip中的button</Button>
         </ToolTip>
       </div>
