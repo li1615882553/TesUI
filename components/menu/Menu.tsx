@@ -18,5 +18,5 @@ export interface IMenuProps extends IBaseComponent{
 
 @Component
 export class Menu extends Control<IMenuProps>{
-
+  
 }
