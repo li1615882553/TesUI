@@ -157,31 +157,32 @@ class Select extends Control<ISelectProps> {
             </div>
             : null
         }
-        <Input
-          type="text"
-          model="selectLabel"
-          placeholder={this.cachePlaceholder}
-          clearable={clearable}
-          suffixIcon={this.suffixIcon}
-          disabled={this.selectDisabled}
-          readonly={this.readonly}
-          onFocus={this.handleFocus}
-          onBlur={this.handleBlur}
-          onInput={this.handleQueryChange}
-          onClear={this.handleClear}
+
+        <Popup
+          className="t-select-dropdown"
+          style={`width:${this.inputWidth}px;display:none;`}
+          align="lr-bb"
+          type="visible"
+          visible={this.visible}
+          onChange={this.handleClickOut}
+          content={list}
+          appendToBody={true}
         >
-          <Popup
-            className="t-select-dropdown"
-            style={`width:${this.inputWidth}px;display:none;`}
-            align="lr-bb"
-            type="visible"
-            visible={this.visible}
-            onChange={this.handleClickOut}
-            content={list}
-            appendToBody={false}
-          >
-          </Popup>
-        </Input>
+          <Input
+            type="text"
+            model="selectLabel"
+            placeholder={this.cachePlaceholder}
+            clearable={clearable}
+            suffixIcon={this.suffixIcon}
+            disabled={this.selectDisabled}
+            readonly={this.readonly}
+            onFocus={this.handleFocus}
+            onBlur={this.handleBlur}
+            onInput={this.handleQueryChange}
+            onClear={this.handleClear}
+          ></Input>
+        </Popup>
+
       </div>
     )
   }
@@ -382,7 +383,7 @@ class Select extends Control<ISelectProps> {
             this.initialInputHeight
           ) + 'px';
       }
-      (this.find(".t-select-dropdown") as Popup).realign();
+      // (this.find(".t-select-dropdown") as Popup).realign();
     })
   }
 

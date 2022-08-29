@@ -16,13 +16,22 @@ export class MenuItem extends Control<IMenuItemProps>{
   rootMenu: Menu;
   parentSubMenus:SubMenu[] = [];
   deep: number = 0;
-  indexPath: string;
+
+  //当前路径的所有path
+  get indexPath(){
+    let path = [this.props.index];
+    this.parentSubMenus.forEach(subMenu => {
+      path.unshift(subMenu.props.index);
+    })
+    return path;
+  }
 
   protected componentWillMount() {
     let parent = this.$parent;
     while (parent) {
       if (parent instanceof Menu) {
         this.rootMenu = parent;
+        this.rootMenu.addMenuItem(this);
         this.deep++;
         break;
       } else if (parent instanceof SubMenu) {
@@ -31,6 +40,9 @@ export class MenuItem extends Control<IMenuItemProps>{
       }
       parent = parent.$parent;
     }
+  }
+  protected componentWillDestory(): void {
+    this.rootMenu.addMenuItem(this);
   }
 
   handleChick(e:MouseEvent) {

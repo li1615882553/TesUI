@@ -16,45 +16,96 @@ export interface IMenuProps extends IBaseComponent {
   defaultOpeneds?: Array<string>;
   /**菜单子项偏移量 */
   offset?: number;
+  /**子菜单打开的触发方式(只在 mode 为 horizontal 时有效) */
+  menuTrigger?: "hover" | "click";
   /**subMenu展开回调 */
   onOpen?: (index: string) => void;
   /**subMenu收起回调 */
-  onColse?: (index: string) => void;
+  onClose?: (index: string) => void;
   /** item - 选中回调 */
   onSelect?: (index: string) => void;
 }
 
 @Component
 export class Menu extends Control<IMenuProps>{
-  menuItems: MenuItem[] = [];
-  menuGroups: MenuGroup[] = [];
+  menuItems: { string?: MenuItem } = {};
+  subMenus: { string?: SubMenu } = {};
+  menuGroups: { string?: MenuGroup } = {};
   activeIndex: string;
   openedMenus: string[];
 
-  componentWillMount(){
+  addMenuItem(item: MenuItem) {
+    this.menuItems[item.props.index] = item;
+  }
+  removeMenuItem(item: MenuItem) {
+    delete this.menuItems[item.props.index];
+  }
+
+  addSubMenu(subMenu: SubMenu) {
+    this.subMenus[subMenu.props.index] = subMenu;
+  }
+  removeSubMenu(subMenu: SubMenu) {
+    delete this.subMenus[subMenu.props.index];
+  }
+  openMenu(index) {
+    if (this.openedMenus.indexOf(index) !== -1) return;
+    this.openedMenus.push(index);
+  }
+  closeMenu(index) {
+    const i = this.openedMenus.indexOf(index);
+    if (i !== -1) {
+      this.openedMenus.splice(i, 1);
+    }
+  }
+  //初始化展开菜单
+  initOpenMenu() {
+    const index = this.activeIndex;
+    const activeItem = this.menuItems[index];
+    const { mode } = this.props;
+    if (!activeItem || mode === "horizontal") return;
+
+    let indexPath = activeItem.indexPath;
+    indexPath.forEach(index => {
+      let subMenu = this.subMenus[index];
+      subMenu && this.openMenu(index);
+    })
+  }
+
+  handleSubmenuClick(subMenu: SubMenu) {
+    const { onOpen, onClose } = this.props;
+    const subMenuIndex = subMenu.props.index;
+    if (this.openedMenus.indexOf(subMenuIndex) !== -1) {
+      this.openedMenus.splice(this.openedMenus.indexOf(subMenuIndex), 1);
+      onClose && onClose(subMenuIndex);
+    } else {
+      this.openedMenus.push(subMenuIndex);
+      onOpen && onOpen(subMenuIndex);
+    }
+  }
+
+  handleItemCheck(menuItem: MenuItem) {
+    const { onSelect, mode } = this.props;
+    const { index } = menuItem.props;
+    this.activeIndex = index;
+
+    onSelect && onSelect(index);
+
+    if(mode === "horizontal"){
+      this.openedMenus = [];
+    }
+  }
+
+  protected componentWillMount(): void {
     const { defaultActive, defaultOpeneds } = this.props;
     this.activeIndex = defaultActive;
     this.openedMenus = defaultOpeneds ? defaultOpeneds.slice(0) : [];
   }
-
-  handleItemCheck(menuItem: MenuItem) {
-    const { index } = menuItem.props;
-    this.activeIndex = index;
+  protected componentMounted(): void {
+    this.initOpenMenu();
   }
 
-  handleOpenChange(subMenu: SubMenu){
-    const subMenuIndex = subMenu.props.index;
-    if(this.openedMenus.indexOf(subMenuIndex) !== -1){
-      subMenu.childMenuVisible = false;
-      this.openedMenus.splice(this.openedMenus.indexOf(subMenuIndex), 1);
-    }else{
-      subMenu.childMenuVisible = true;
-      this.openedMenus.push(subMenuIndex);
-    }
-  }
-
-  render(){
-    const { className, style, mode = "vertical", defaultActive } = this.props;
+  render() {
+    const { className, style, mode = "vertical" } = this.props;
     const clsName = classNames(
       't-menu', `t-menu--${mode}`, className
     )
@@ -64,7 +115,7 @@ export class Menu extends Control<IMenuProps>{
         className={clsName}
         style={style}
       >
-        { this.$children }
+        {this.$children}
       </ul>
     )
   }

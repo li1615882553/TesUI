@@ -2,7 +2,6 @@ import { IBaseComponent } from "../template/component"
 import { Control, Component, VNode, nextTick } from "tes-work";
 import * as DOM from "../ux/dom/index";
 import pin, { alignPos } from "../ux/align/align";
-import { isArray } from "@component/utils/array/array";
 
 export interface IPopupProps extends IBaseComponent {
   /**
@@ -200,7 +199,7 @@ class Popup extends Control<IPopupProps> {
   }
 
   execStyle() {
-    const { style } = this.props;
+    const { style  = {}} = this.props;
     let _style = {};
     if(typeof(style)=='string'){
       style.split(";").forEach((prop) => {
@@ -219,22 +218,22 @@ class Popup extends Control<IPopupProps> {
 
   protected render() {
     const lastPopContent = this.popContent;
-    const { type, className, style, content, appendToBody = true } = this.props;
-    this.popContent = VNode.create("div", { className, "style":this.execStyle() }, content);
-    if (type === "visible") {
-      return this.popContent;
-    } else {
-      let child: VNode = isArray(this.$children) ? this.$children[0] : this.$children;
-      if (appendToBody) {
-        if (!this.hasAppendToBody) {
-          VNode.sync(this.popContent);
-          document.body.appendChild(this.popContent.result instanceof Control ? this.popContent.result.elem : this.popContent.result);
-          this.hasAppendToBody = !this.hasAppendToBody;
-        } else {
-          VNode.sync(this.popContent, lastPopContent);
-        }
-        return Control.$cloneNode(child, { ...this.getTargetTriggerAction() })
+    let child: VNode = this.$children[0];
+    const { type = "event", className = '', content, appendToBody = true } = this.props;
+    this.popContent = VNode.create("div", { className, "style":this.execStyle() }, [content]);
+    if (appendToBody) {
+      if (!this.hasAppendToBody) {
+        VNode.sync(this.popContent);
+        document.body.appendChild(this.popContent.result instanceof Control ? this.popContent.result.elem : this.popContent.result);
+        this.hasAppendToBody = true;
       } else {
+        VNode.sync(this.popContent, lastPopContent);
+      }
+      return Control.$cloneNode(child, (type === "visible") ? {} : { ...this.getTargetTriggerAction() })
+    } else {
+      if(type === "visible"){
+        return  VNode.create("div", null, [...this.$children, this.popContent]);
+      }else{
         return Control.$cloneNode(child, { ...this.getTargetTriggerAction() }, this.popContent)
       }
     }
