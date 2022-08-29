@@ -2,6 +2,7 @@ import { Control, Component, VNode } from "tes-work";
 import { IBaseComponent } from "../template/component";
 import classNames from "classnames";
 import Menu from "./Menu";
+import MenuItem from "./MenuItem";
 import Popup from "@component/popup/popup";
 export interface ISubMenuProps extends IBaseComponent {
   /**submenu ID */
@@ -22,15 +23,48 @@ export class SubMenu extends Control<ISubMenuProps>{
   deep: number = 0;
   timeout;
   mouseInChild: boolean = false;
+  menuItems: { string?: MenuItem } = {};
+  subMenus: { string?: SubMenu } = {};
   get opend() {
     const { index } = this.props;
     return this.rootMenu.openedMenus.indexOf(index) !== -1;
   }
 
+  get active() {
+    console.log(this.$info.uid , "调用active")
+    let isActive = false;
+    Object.keys(this.menuItems).forEach(index => {
+      if (index === this.rootMenu.activeIndex) {
+        isActive = true;
+      }
+    });
+
+    Object.keys(this.subMenus).forEach(index => {
+      if (this.subMenus[index].active) {
+        isActive = true;
+      }
+    });
+    return isActive;
+  }
+
+  addMenuItem(item: MenuItem) {
+    this.menuItems[item.props.index] = item;
+  }
+  removeMenuItem(item: MenuItem) {
+    delete this.menuItems[item.props.index];
+  }
+
+  addSubMenu(subMenu: SubMenu) {
+    this.subMenus[subMenu.props.index] = subMenu;
+  }
+  removeSubMenu(subMenu: SubMenu) {
+    delete this.subMenus[subMenu.props.index];
+  }
+
   handleOpen(e: MouseEvent) {
     e.stopPropagation();
     const { mode = "vertical", menuTrigger = "hover", } = this.rootMenu.props;
-    const { disabled, index } = this.props;
+    const { disabled } = this.props;
 
     if ((menuTrigger === "hover" && mode === "horizontal") || disabled) return;
     this.rootMenu.handleSubmenuClick(this);
@@ -42,8 +76,7 @@ export class SubMenu extends Control<ISubMenuProps>{
     if ((menuTrigger === "click" && mode === "horizontal") || disabled) return;
 
     Object.keys(this.rootMenu.subMenus).forEach(subMenu => {
-      if(this.rootMenu.subMenus[subMenu].deep !== this.deep){
-        console.log("触发enter")
+      if (this.rootMenu.subMenus[subMenu].deep !== this.deep) {
         this.rootMenu.subMenus[subMenu].mouseInChild = true;
         clearTimeout(this.rootMenu.subMenus[subMenu].timeout);
       }
@@ -54,14 +87,12 @@ export class SubMenu extends Control<ISubMenuProps>{
     }, showTime);
   }
   handleMouseLeave(e: MouseEvent) {
-    const { disabled, hideTime = 100, index } = this.props;
+    const { disabled, hideTime = 300, index } = this.props;
     const { mode = "vertical", menuTrigger = "hover", } = this.rootMenu.props;
     if ((menuTrigger === "click" && mode === "horizontal") || disabled) return;
 
-    console.log("触发leave")
     Object.keys(this.rootMenu.subMenus).forEach(subMenu => {
-      console.log(this.rootMenu.subMenus[subMenu].deep , this.deep)
-      if(this.rootMenu.subMenus[subMenu].deep === this.deep){
+      if (this.rootMenu.subMenus[subMenu].deep === this.deep) {
         this.rootMenu.subMenus[subMenu].mouseInChild = false;
         clearTimeout(this.rootMenu.subMenus[subMenu].timeout);
       }
@@ -81,6 +112,7 @@ export class SubMenu extends Control<ISubMenuProps>{
         this.rootMenu.addSubMenu(this);
         break;
       } else if (parent instanceof SubMenu) {
+        parent.addSubMenu(this);
         this.deep++;
       }
       parent = parent.$parent;
@@ -88,18 +120,25 @@ export class SubMenu extends Control<ISubMenuProps>{
   }
   protected componentWillDestory(): void {
     this.rootMenu.removeSubMenu(this);
+    Object.keys(this.subMenus).forEach(subMenu => {
+      this.subMenus[subMenu].removeSubMenu(this.subMenus[subMenu])
+    })
   }
 
   render() {
+    console.log("调用render")
+
     const { className, style, title, disabled } = this.props;
     const { mode = "vertical", offset = 24 } = this.rootMenu.props;
     const clsName = classNames(
       "t-submenu", className,
       {
+        [`is-active`]: this.active,
         [`is-open`]: this.opend,
         [`is-disabled`]: disabled,
       },
     );
+    console.log(clsName)
     const paddingLeft = mode === "vertical" ? `${this.deep * offset}px` : '';
     const action = mode === "vertical" ?
       {
@@ -129,18 +168,18 @@ export class SubMenu extends Control<ISubMenuProps>{
             (
               <Popup
                 type="visible"
-                align={ this.deep === 1 ? "bottom" : "rr-cc" }
+                align={this.deep === 1 ? "bottom" : "rr-cc"}
                 visible={this.opend}
                 style="position:absolute;"
                 margin={0}
-                content={<ul className="t-menu t-menu--popup" onMouseEnter={this.handleMouseEnter} onMouseLeave = {this.handleMouseLeave} >{this.$children}</ul>}
+                content={<ul className="t-menu t-menu--popup" onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} >{this.$children}</ul>}
               >
                 {titleContent}
               </Popup>
             ) :
             (
               <div>
-                { titleContent }
+                {titleContent}
                 <ul className="t-menu" style={`display:${this.opend ? '' : 'none'}`}>
                   {this.$children}
                 </ul>
