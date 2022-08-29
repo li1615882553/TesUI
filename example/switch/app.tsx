@@ -5,7 +5,7 @@ import Switch from "@component/switch/switch";
 @Component
 class Panel extends Control {
   public done: boolean = true;
-  handleChange(){
+  handleChange() {
     nextTick(() => {
       console.log(this.done)
     })
@@ -14,7 +14,15 @@ class Panel extends Control {
   render() {
     return (
       <div>
-        <Switch disabled model="done" onChange={this.handleChange} inactiveTest="取消" activeText="选中"></Switch>
+        <div>
+          <Switch disabled model="done" onChange={this.handleChange} inactiveTest="取消" activeText="选中"></Switch>
+        </div>
+        <div>
+          <Switch model="done" onChange={this.handleChange} inactiveTest="取消" activeText="选中"></Switch>
+        </div>
+        <div>
+          <Switch model="done" onChange={this.handleChange} ></Switch>
+        </div>
       </div>
     )
   }

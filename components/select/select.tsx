@@ -125,6 +125,7 @@ class Select extends Control<ISelectProps> {
     const { multiple, clearable, filterable, emptyText = "无匹配数据" } = this.props;
     const list = this.execChildVNode(this.$children);
     list.push((<p class="t-select-dropdown__empty" style={`${this.optionsCount ? 'display:none;' : ''}`}>{emptyText}</p>));
+
     !this.selected && (this.selected = multiple ? [] : undefined);
     const selectTags = (multiple && this.selected.length && (this.selected as Array<any>).map(tag => {
       return <Tag closeable={!this.selectDisabled} type="info" onClose={this.deleteTag(tag)} ><span class="t-select__tags-text">{tag.currentLabel}</span></Tag>
@@ -176,8 +177,9 @@ class Select extends Control<ISelectProps> {
             type="visible"
             visible={this.visible}
             onChange={this.handleClickOut}
+            content={list}
+            appendToBody={false}
           >
-            {list}
           </Popup>
         </Input>
       </div>

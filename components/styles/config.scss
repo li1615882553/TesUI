@@ -114,9 +114,11 @@ $spacer-small: .25rem !default;
 }
 
 @mixin clear() {
-  &::after {
-    content: "";
-    display: block;
-    clear: both;
+  @at-root {
+    &::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
   }
 }
