@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { IBaseComponent } from "../template/component";
-import { Control, Component } from "tes-work";
+import TesWork from "tes-work";
+const {Component, Control} = TesWork;
 
 import "./button.scss";
 

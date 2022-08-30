@@ -1,25 +1,25 @@
-import Button from "./Button";
-import Checkbox from "./Checkbox";
-import Grid from "./Grid"
-import Input from "./Input";
-import InputNumber from "./InputNumber";
-import Menu from "./Menu";
-import Radio from "./Radio";
-import Select from "./Select";
-import Switch from "./Switch";
-import Tag from "./Tag";
-import Tooltip from "./Tooltip";
+import button from './button';
+import checkbox from './checkbox';
+import grid from './grid';
+import input from './input';
+import inputNumber from './inputNumber';
+import menu from './menu';
+import radio from './radio';
+import select from './select';
+import Switch from './Switch';
+import tag from './tag';
+import tooltip from './tooltip';
 
 export {
-  Button,
-  Checkbox,
-  Grid,
-  Input,
-  InputNumber,
-  Menu,
-  Radio,
-  Select,
+  button,
+  checkbox,
+  grid,
+  input,
+  inputNumber,
+  menu,
+  radio,
+  select,
   Switch,
-  Tag,
-  Tooltip
-}
+  tag,
+  tooltip,
+  };
