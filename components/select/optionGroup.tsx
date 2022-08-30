@@ -2,10 +2,10 @@ import { Control, Component } from "tes-work";
 import { IBaseComponent } from "../template/component"
 import { escapeRegexpString } from "../utils/util";
 import { isArray } from "../utils/array/array";
-import Option from "./option";
+import Option from "./Option";
 
 import "./optionGroup.scss"
-import Select from "./select";
+import Select from "./Select";
 
 
 export interface IOptionsGroupProps extends IBaseComponent {

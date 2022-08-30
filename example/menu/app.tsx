@@ -1,18 +1,19 @@
 
 import { Component, Control, Watch, nextTick } from "tes-work";
-import Menu from "@component/menu/Menu";
-import SubMenu from "@component/menu/SubMenu";
-import MenuItem from "@component/menu/MenuItem";
-import MenuItemGroup from "@component/menu/MenuItemGroup";
+import Menu from "@component/Menu/Menu";
+import SubMenu from "@component/Menu/SubMenu";
+import MenuItem from "@component/Menu/MenuItem";
+import MenuItemGroup from "@component/Menu/MenuItemGroup";
 
-import Row from "@component/grid/row";
-import Col from "@component/grid/col";
+import Row from "@component/Grid/Row";
+import Col from "@component/Grid/Col";
 
 @Component
 class Panel extends Control {
   handleSelect(index) {
-    console.log(index)
+    // console.log(index)
   }
+  
   render() {
     return (
       <div>
@@ -42,12 +43,12 @@ class Panel extends Control {
                   <MenuItem index="1-2"><i className="iconfont icon-loading"></i> 我的工作台</MenuItem>
                 </MenuItemGroup>
                 <SubMenu index="1-3" title={<span><i className="iconfont icon-add"></i>关于</span>}>
-                  <MenuItem index="1-3-1">我的</MenuItem>
+                  <MenuItem index="1-3-1" disabled>我的</MenuItem>
                   <MenuItem index="1-3-2">历史记录</MenuItem>
                 </SubMenu>
               </SubMenu>
               <SubMenu index="2" title="导航二">
-                <MenuItem index="1-3" disabled>消息中心</MenuItem>
+                <MenuItem index="1-3">消息中心</MenuItem>
               </SubMenu>
             </Menu>
           </Col>

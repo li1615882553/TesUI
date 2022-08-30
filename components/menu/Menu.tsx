@@ -2,13 +2,13 @@ import classNames from "classnames";
 import { Control, Component, Watch } from "tes-work";
 import { IBaseComponent } from "../template/component";
 import MenuItem from "./MenuItem";
-import MenuGroup from "./MenuItemGroup";
+import MenuItemGroup from "./MenuItemGroup";
 
 import "./menu.scss";
 import SubMenu from "./SubMenu";
 
 export interface IMenuProps extends IBaseComponent {
-  /**模式 */
+  /**模式 vertical垂直  horizontal水平*/
   mode?: 'vertical' | 'horizontal';
   /**当前激活菜单的 index */
   defaultActive?: string;
@@ -28,9 +28,13 @@ export interface IMenuProps extends IBaseComponent {
 
 @Component
 export class Menu extends Control<IMenuProps>{
+  static Item: typeof MenuItem;
+  static SubMenu: typeof SubMenu;
+  static ItemGroup: typeof MenuItemGroup;
+
   menuItems: { string?: MenuItem } = {};
   subMenus: { string?: SubMenu } = {};
-  menuGroups: { string?: MenuGroup } = {};
+  menuGroups: { string?: MenuItemGroup } = {};
   activeIndex: string;
   openedMenus: string[];
 
@@ -61,7 +65,7 @@ export class Menu extends Control<IMenuProps>{
   initOpenMenu() {
     const index = this.activeIndex;
     const activeItem = this.menuItems[index];
-    const { mode } = this.props;
+    const { mode = "vertical" } = this.props;
     if (!activeItem || mode === "horizontal") return;
 
     let indexPath = activeItem.indexPath;
@@ -84,7 +88,7 @@ export class Menu extends Control<IMenuProps>{
   }
 
   handleItemCheck(menuItem: MenuItem) {
-    const { onSelect, mode } = this.props;
+    const { onSelect, mode = "vertical" } = this.props;
     const { index } = menuItem.props;
     this.activeIndex = index;
 

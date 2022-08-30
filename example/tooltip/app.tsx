@@ -1,7 +1,7 @@
 
 import { Component, Control, Watch, nextTick } from "tes-work";
 import ToolTip from "@component/Tooltip/Tooltip";
-import Button from "@component/button";
+import Button from "@component/Button";
 
 @Component
 class Panel extends Control {

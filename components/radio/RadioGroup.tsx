@@ -1,8 +1,8 @@
 import { Control, Component, VNode, nextTick } from "tes-work";
 import { IBaseComponent } from "../template/component";
-import { IRadioProps } from "./radio";
+import { IRadioProps } from "./Radio";
 
-import "./radio-group.scss";
+import "./RadioGroup.scss";
 export interface IRadioGroupProps extends IBaseComponent {
   /**绑定值 */
   value?: string | number | boolean,

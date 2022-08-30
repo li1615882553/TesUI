@@ -1,9 +1,9 @@
 import { Control, Component, VNode, Watch } from "tes-work";
-import Button from "@component/button/Button";
-import RadioGroup from "@component/radio/radio-group";
-import Radio from "@component/radio/radio";
-import Checkbox from "@component/checkbox/checkbox";
-import CheckBoxGroup from "@component/checkbox/checkbox-group";
+import Button from "@component/Button/Button";
+import RadioGroup from "@component/Radio/RadioGroup";
+import Radio from "@component/Radio/Radio";
+import Checkbox from "@component/Checkbox/Checkbox";
+import CheckBoxGroup from "@component/Checkbox/CheckboxGroup";
 
 import "./app.scss";
 @Component

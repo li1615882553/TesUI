@@ -1,7 +1,7 @@
 import { Control, Component, nextTick } from "tes-work";
-import Tag from "@component/tag/tag";
-import Input from "@component/input/input";
-import Button from "@component/button/Button";
+import Tag from "@component/Tag/Tag";
+import Input from "@component/Input/Input";
+import Button from "@component/Button/Button";
 
 import "./index.scss";
 

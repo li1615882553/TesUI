@@ -2,7 +2,8 @@ import { Control, Component, VNode } from "tes-work";
 import { IBaseComponent } from "../template/component";
 import classNames from "classnames";
 import Menu from "./Menu";
-import Popup from "@component/popup/popup";
+import MenuItem from "./MenuItem";
+import Popup from "@component/Popup/Popup";
 export interface ISubMenuProps extends IBaseComponent {
   /**submenu ID */
   index: string;
@@ -22,15 +23,66 @@ export class SubMenu extends Control<ISubMenuProps>{
   deep: number = 0;
   timeout;
   mouseInChild: boolean = false;
+  /**子MenuItem */
+  menuItems: { string?: MenuItem } = {};
+  /**子SubMenu */
+  subMenus: { string?: SubMenu } = {};
   get opend() {
     const { index } = this.props;
     return this.rootMenu.openedMenus.indexOf(index) !== -1;
   }
 
+  get active() {
+    let isActive = false;
+    Object.keys(this.menuItems).forEach(index => {
+      if (index === this.rootMenu.activeIndex) {
+        isActive = true;
+      }
+    });
+
+    Object.keys(this.subMenus).forEach(index => {
+      if (this.subMenus[index].active) {
+        isActive = true;
+      }
+    });
+    return isActive;
+  }
+
+  addMenuItem(item: MenuItem) {
+    this.menuItems[item.props.index] = item;
+  }
+  removeMenuItem(item: MenuItem) {
+    delete this.menuItems[item.props.index];
+  }
+
+  addSubMenu(subMenu: SubMenu) {
+    this.subMenus[subMenu.props.index] = subMenu;
+  }
+  removeSubMenu(subMenu: SubMenu) {
+    delete this.subMenus[subMenu.props.index];
+  }
+
+  /**获取直属上级SubMenu */
+  getParentSubMenu():SubMenu | undefined{
+    let parentSubMenu, parent = this.$parent;
+    while(parent){
+      if(parent instanceof Popup) {
+        parent = parent.$parent;
+        continue;
+      }else if(parent instanceof SubMenu){
+        parentSubMenu = parent;
+      }else{
+        break;
+      }
+      parent = parent.$parent;
+    }
+    return parentSubMenu;
+  }
+
   handleOpen(e: MouseEvent) {
     e.stopPropagation();
     const { mode = "vertical", menuTrigger = "hover", } = this.rootMenu.props;
-    const { disabled, index } = this.props;
+    const { disabled } = this.props;
 
     if ((menuTrigger === "hover" && mode === "horizontal") || disabled) return;
     this.rootMenu.handleSubmenuClick(this);
@@ -42,8 +94,7 @@ export class SubMenu extends Control<ISubMenuProps>{
     if ((menuTrigger === "click" && mode === "horizontal") || disabled) return;
 
     Object.keys(this.rootMenu.subMenus).forEach(subMenu => {
-      if(this.rootMenu.subMenus[subMenu].deep !== this.deep){
-        console.log("触发enter")
+      if (this.rootMenu.subMenus[subMenu].deep !== this.deep) {
         this.rootMenu.subMenus[subMenu].mouseInChild = true;
         clearTimeout(this.rootMenu.subMenus[subMenu].timeout);
       }
@@ -53,15 +104,13 @@ export class SubMenu extends Control<ISubMenuProps>{
       this.rootMenu.openMenu(index);
     }, showTime);
   }
-  handleMouseLeave(e: MouseEvent) {
-    const { disabled, hideTime = 100, index } = this.props;
-    const { mode = "vertical", menuTrigger = "hover", } = this.rootMenu.props;
+  handleMouseLeave(deepDispatch = false) {
+    const { disabled, hideTime = 300, index } = this.props;
+    const { mode = "vertical", menuTrigger = "hover" } = this.rootMenu.props;
     if ((menuTrigger === "click" && mode === "horizontal") || disabled) return;
 
-    console.log("触发leave")
     Object.keys(this.rootMenu.subMenus).forEach(subMenu => {
-      console.log(this.rootMenu.subMenus[subMenu].deep , this.deep)
-      if(this.rootMenu.subMenus[subMenu].deep === this.deep){
+      if (this.rootMenu.subMenus[subMenu].deep === this.deep) {
         this.rootMenu.subMenus[subMenu].mouseInChild = false;
         clearTimeout(this.rootMenu.subMenus[subMenu].timeout);
       }
@@ -70,6 +119,13 @@ export class SubMenu extends Control<ISubMenuProps>{
     this.timeout = setTimeout(() => {
       !this.mouseInChild && this.rootMenu.closeMenu(index);
     }, hideTime);
+
+    if(mode === "horizontal" && deepDispatch){
+      let parentSubMenu = this.getParentSubMenu();
+      if(parentSubMenu){
+        parentSubMenu.handleMouseLeave(true);
+      }
+    }
   }
 
   protected componentWillMount() {
@@ -81,6 +137,7 @@ export class SubMenu extends Control<ISubMenuProps>{
         this.rootMenu.addSubMenu(this);
         break;
       } else if (parent instanceof SubMenu) {
+        parent.addSubMenu(this);
         this.deep++;
       }
       parent = parent.$parent;
@@ -88,6 +145,9 @@ export class SubMenu extends Control<ISubMenuProps>{
   }
   protected componentWillDestory(): void {
     this.rootMenu.removeSubMenu(this);
+    Object.keys(this.subMenus).forEach(subMenu => {
+      this.subMenus[subMenu].removeSubMenu(this.subMenus[subMenu])
+    })
   }
 
   render() {
@@ -96,17 +156,19 @@ export class SubMenu extends Control<ISubMenuProps>{
     const clsName = classNames(
       "t-submenu", className,
       {
+        [`is-active`]: mode === "horizontal" && this.active,
         [`is-open`]: this.opend,
         [`is-disabled`]: disabled,
       },
     );
+
     const paddingLeft = mode === "vertical" ? `${this.deep * offset}px` : '';
     const action = mode === "vertical" ?
       {
         onClick: this.handleOpen
       } : {
         onMouseEnter: this.handleMouseEnter,
-        onMouseLeave: this.handleMouseLeave
+        onMouseLeave: () => this.handleMouseLeave(false)
       };
     const titleContent = (
       <div
@@ -129,18 +191,19 @@ export class SubMenu extends Control<ISubMenuProps>{
             (
               <Popup
                 type="visible"
-                align={ this.deep === 1 ? "bottom" : "rr-cc" }
+                align={this.deep === 1 ? "bottom" : "rr-cc"}
                 visible={this.opend}
                 style="position:absolute;"
                 margin={0}
-                content={<ul className="t-menu t-menu--popup" onMouseEnter={this.handleMouseEnter} onMouseLeave = {this.handleMouseLeave} >{this.$children}</ul>}
+                autoHide={false}
+                content={<ul className="t-menu t-menu--popup" onMouseEnter={this.handleMouseEnter} onMouseLeave={() => this.handleMouseLeave(true)} >{this.$children}</ul>}
               >
                 {titleContent}
               </Popup>
             ) :
             (
               <div>
-                { titleContent }
+                {titleContent}
                 <ul className="t-menu" style={`display:${this.opend ? '' : 'none'}`}>
                   {this.$children}
                 </ul>

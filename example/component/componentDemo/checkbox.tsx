@@ -1,6 +1,6 @@
 import { Control, Component, Watch } from "tes-work";
-import Checkbox from "@component/checkbox/checkbox";
-import CheckBoxGroup from "@component/checkbox/checkbox-group";
+import Checkbox from "@component/Checkbox/Checkbox";
+import CheckBoxGroup from "@component/Checkbox/CheckboxGroup";
 
 @Component
 class CheckBoxDemo extends Control {

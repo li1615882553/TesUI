@@ -4,11 +4,11 @@ import { isObject } from "../utils/object/object";
 import { getValueByPath } from "../utils/util";
 
 import "./select.scss"
-import OptionGroup from "./optionGroup";
-import Input from "../input/input";
-import Popup from "../popup/popup";
-import Tag from "../tag/tag";
-import Option from "./option";
+import OptionGroup from "./OptionGroup";
+import Input from "../Input/Input";
+import Popup from "../Popup/Popup";
+import Tag from "../Tag/Tag";
+import Option from "./Option";
 
 export interface ISelectProps extends IBaseComponent {
   /**选项的值 */
@@ -46,6 +46,9 @@ export interface ISelectProps extends IBaseComponent {
 
 @Component
 class Select extends Control<ISelectProps> {
+  static Option: typeof Option;
+  static OptionGroup: typeof OptionGroup;
+
   hoverIndex: number = -1;
   visible: boolean = false;
   menuVisibleOnFocus: boolean = false;
@@ -111,6 +114,7 @@ class Select extends Control<ISelectProps> {
     this.cachePlaceholder = this.props.placeholder;
   }
   protected componentMounted(): void {
+    console.log("select componentMounted")
     const input = (this.find(".t-input input") as HTMLElement);
 
     //等待Option全部挂载完毕执行
@@ -157,7 +161,6 @@ class Select extends Control<ISelectProps> {
             </div>
             : null
         }
-
         <Popup
           className="t-select-dropdown"
           style={`width:${this.inputWidth}px;display:none;`}
@@ -166,11 +169,11 @@ class Select extends Control<ISelectProps> {
           visible={this.visible}
           onChange={this.handleClickOut}
           content={list}
-          appendToBody={true}
+          appendToBody={false}
         >
           <Input
             type="text"
-            model="selectLabel"
+            value={this.selectLabel}
             placeholder={this.cachePlaceholder}
             clearable={clearable}
             suffixIcon={this.suffixIcon}

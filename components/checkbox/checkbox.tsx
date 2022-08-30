@@ -2,7 +2,7 @@ import { isArray } from "../utils/array/array";
 import { shallowCopy } from "../utils/util";
 import { Control,Component } from "tes-work";
 import { IBaseComponent } from "../template/component";
-import CheckBoxGroup from "./checkbox-group";
+import CheckBoxGroup from "./CheckboxGroup";
 
 export interface ICheckBoxProps extends IBaseComponent {
   /**单向传入的值 */
@@ -25,6 +25,7 @@ export interface ICheckBoxProps extends IBaseComponent {
 
 @Component
 class Checkbox extends Control<ICheckBoxProps> {
+  static Group: typeof CheckBoxGroup;
   checkboxGroup: CheckBoxGroup;
   get isGroup() {
     let parent = this.$parent;

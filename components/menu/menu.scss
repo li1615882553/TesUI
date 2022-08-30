@@ -53,7 +53,7 @@
   @include m(horizontal) {
     border-right: none;
 
-    &>.t-menu-item {
+    &> .t-menu-item {
       float: left;
       height: 60px;
       line-height: 60px;
@@ -105,8 +105,9 @@
         }
 
         & .t-menu-item.is-active,
-        & .t-submenu.is-active>.t-submenu__title {
+        & .t-submenu.is-active > .t-submenu__title {
           color: $text-color-dark;
+          font-weight: bold;
         }
       }
 
@@ -182,7 +183,7 @@
   }
 
   @include when(open) {
-    >.t-submenu__title .t-submenu__arrow {
+     .t-submenu__title .t-submenu__arrow {
       transform: rotateZ(180deg);
     }
   }
