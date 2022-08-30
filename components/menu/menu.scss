@@ -183,7 +183,7 @@
   }
 
   @include when(open) {
-    >.t-submenu__title .t-submenu__arrow {
+     .t-submenu__title .t-submenu__arrow {
       transform: rotateZ(180deg);
     }
   }

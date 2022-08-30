@@ -23,7 +23,9 @@ export class SubMenu extends Control<ISubMenuProps>{
   deep: number = 0;
   timeout;
   mouseInChild: boolean = false;
+  /**子MenuItem */
   menuItems: { string?: MenuItem } = {};
+  /**子SubMenu */
   subMenus: { string?: SubMenu } = {};
   get opend() {
     const { index } = this.props;
@@ -31,7 +33,6 @@ export class SubMenu extends Control<ISubMenuProps>{
   }
 
   get active() {
-    console.log(this.$info.uid , "调用active")
     let isActive = false;
     Object.keys(this.menuItems).forEach(index => {
       if (index === this.rootMenu.activeIndex) {
@@ -61,6 +62,23 @@ export class SubMenu extends Control<ISubMenuProps>{
     delete this.subMenus[subMenu.props.index];
   }
 
+  /**获取直属上级SubMenu */
+  getParentSubMenu():SubMenu | undefined{
+    let parentSubMenu, parent = this.$parent;
+    while(parent){
+      if(parent instanceof Popup) {
+        parent = parent.$parent;
+        continue;
+      }else if(parent instanceof SubMenu){
+        parentSubMenu = parent;
+      }else{
+        break;
+      }
+      parent = parent.$parent;
+    }
+    return parentSubMenu;
+  }
+
   handleOpen(e: MouseEvent) {
     e.stopPropagation();
     const { mode = "vertical", menuTrigger = "hover", } = this.rootMenu.props;
@@ -86,9 +104,9 @@ export class SubMenu extends Control<ISubMenuProps>{
       this.rootMenu.openMenu(index);
     }, showTime);
   }
-  handleMouseLeave(e: MouseEvent) {
+  handleMouseLeave(deepDispatch = false) {
     const { disabled, hideTime = 300, index } = this.props;
-    const { mode = "vertical", menuTrigger = "hover", } = this.rootMenu.props;
+    const { mode = "vertical", menuTrigger = "hover" } = this.rootMenu.props;
     if ((menuTrigger === "click" && mode === "horizontal") || disabled) return;
 
     Object.keys(this.rootMenu.subMenus).forEach(subMenu => {
@@ -101,6 +119,13 @@ export class SubMenu extends Control<ISubMenuProps>{
     this.timeout = setTimeout(() => {
       !this.mouseInChild && this.rootMenu.closeMenu(index);
     }, hideTime);
+
+    if(mode === "horizontal" && deepDispatch){
+      let parentSubMenu = this.getParentSubMenu();
+      if(parentSubMenu){
+        parentSubMenu.handleMouseLeave(true);
+      }
+    }
   }
 
   protected componentWillMount() {
@@ -126,26 +151,24 @@ export class SubMenu extends Control<ISubMenuProps>{
   }
 
   render() {
-    console.log("调用render")
-
     const { className, style, title, disabled } = this.props;
     const { mode = "vertical", offset = 24 } = this.rootMenu.props;
     const clsName = classNames(
       "t-submenu", className,
       {
-        [`is-active`]: this.active,
+        [`is-active`]: mode === "horizontal" && this.active,
         [`is-open`]: this.opend,
         [`is-disabled`]: disabled,
       },
     );
-    console.log(clsName)
+
     const paddingLeft = mode === "vertical" ? `${this.deep * offset}px` : '';
     const action = mode === "vertical" ?
       {
         onClick: this.handleOpen
       } : {
         onMouseEnter: this.handleMouseEnter,
-        onMouseLeave: this.handleMouseLeave
+        onMouseLeave: () => this.handleMouseLeave(false)
       };
     const titleContent = (
       <div
@@ -172,7 +195,8 @@ export class SubMenu extends Control<ISubMenuProps>{
                 visible={this.opend}
                 style="position:absolute;"
                 margin={0}
-                content={<ul className="t-menu t-menu--popup" onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} >{this.$children}</ul>}
+                autoHide={false}
+                content={<ul className="t-menu t-menu--popup" onMouseEnter={this.handleMouseEnter} onMouseLeave={() => this.handleMouseLeave(true)} >{this.$children}</ul>}
               >
                 {titleContent}
               </Popup>

@@ -111,6 +111,7 @@ class Select extends Control<ISelectProps> {
     this.cachePlaceholder = this.props.placeholder;
   }
   protected componentMounted(): void {
+    console.log("select componentMounted")
     const input = (this.find(".t-input input") as HTMLElement);
 
     //等待Option全部挂载完毕执行
@@ -157,7 +158,6 @@ class Select extends Control<ISelectProps> {
             </div>
             : null
         }
-
         <Popup
           className="t-select-dropdown"
           style={`width:${this.inputWidth}px;display:none;`}
@@ -166,11 +166,11 @@ class Select extends Control<ISelectProps> {
           visible={this.visible}
           onChange={this.handleClickOut}
           content={list}
-          appendToBody={true}
+          appendToBody={false}
         >
           <Input
             type="text"
-            model="selectLabel"
+            value={this.selectLabel}
             placeholder={this.cachePlaceholder}
             clearable={clearable}
             suffixIcon={this.suffixIcon}

@@ -8,7 +8,7 @@ import "./menu.scss";
 import SubMenu from "./SubMenu";
 
 export interface IMenuProps extends IBaseComponent {
-  /**模式 */
+  /**模式 vertical垂直  horizontal水平*/
   mode?: 'vertical' | 'horizontal';
   /**当前激活菜单的 index */
   defaultActive?: string;
@@ -61,7 +61,7 @@ export class Menu extends Control<IMenuProps>{
   initOpenMenu() {
     const index = this.activeIndex;
     const activeItem = this.menuItems[index];
-    const { mode } = this.props;
+    const { mode = "vertical" } = this.props;
     if (!activeItem || mode === "horizontal") return;
 
     let indexPath = activeItem.indexPath;
@@ -84,7 +84,7 @@ export class Menu extends Control<IMenuProps>{
   }
 
   handleItemCheck(menuItem: MenuItem) {
-    const { onSelect, mode } = this.props;
+    const { onSelect, mode = "vertical" } = this.props;
     const { index } = menuItem.props;
     this.activeIndex = index;
 

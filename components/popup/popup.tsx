@@ -33,7 +33,7 @@ export interface IPopupProps extends IBaseComponent {
   animatin?: DOM.ToggleAnimation;
   /**显示弹层的延时,仅对指针移动事件有效 */
   delay?: number;
-  /**是否在点击屏幕空白处消失 */
+  /**是否在点击屏幕空白处消失  只有在type为event时生效 */
   autoHide?: boolean;
   /**弹层对齐方式 */
   align?: alignPos;
@@ -63,7 +63,7 @@ class Popup extends Control<IPopupProps> {
    */
   toggle(value?: boolean) {
     if (this.props.disabled) return;
-    const { autoHide = true, onChange, animatin = "height", duration = 100 } = this.props;
+    const { autoHide = true, type="event" ,onChange, animatin = "height", duration = 100 } = this.props;
     if (this.curVisible === value) {
       return;
     }
@@ -75,7 +75,7 @@ class Popup extends Control<IPopupProps> {
       autoHide && DOM.off(document, "pointerdown", this.handleDocumentPointerDown, this);
       DOM.hide(this.popContent.result as HTMLElement, animatin, undefined, duration, undefined);
     } else {
-      autoHide && DOM.on(document, "pointerdown", this.handleDocumentPointerDown, this);
+      autoHide  && DOM.on(document, "pointerdown", this.handleDocumentPointerDown, this);
       DOM.show(this.popContent.result as HTMLElement, animatin, undefined, duration, undefined);
       this.realign();
     }
@@ -217,8 +217,6 @@ class Popup extends Control<IPopupProps> {
   }
 
   protected render() {
-    // const { className, style } = this.props;
-    // return VNode.create("div", { className, style, ...this.getTargetTriggerAction() }, this.$children)
     const lastPopContent = this.popContent;
     let child: VNode = this.$children[0];
     const { type = "event", className = '', content, appendToBody = true } = this.props;
@@ -239,6 +237,10 @@ class Popup extends Control<IPopupProps> {
         return Control.$cloneNode(child, { ...this.getTargetTriggerAction() }, this.popContent)
       }
     }
+  }
+
+  protected componentMounted(): void {
+      console.log("popup componentMounted")
   }
 
   protected componentWillMount(): void {

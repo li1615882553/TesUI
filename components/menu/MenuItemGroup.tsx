@@ -28,6 +28,11 @@ export class MenuItemGroup extends Control<IMenuItemGroupProps>{
       parent = parent.$parent;
     }
   }
+
+  handleClick(e: MouseEvent){
+    e.stopPropagation();
+  }
+
   render() {
     const { className, style, title } = this.props;
     const { mode = "vertical", offset = 24 } = this.rootMenu.props;
@@ -43,6 +48,7 @@ export class MenuItemGroup extends Control<IMenuItemGroupProps>{
         <div
           className="t-menu-item-group__title"
           style={`padding-left: ${paddingLeft}`}
+          onClick={this.handleClick}
         >
           {title}
         </div>
