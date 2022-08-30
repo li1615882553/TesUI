@@ -1,5 +1,5 @@
 import { Control, Component } from "tes-work";
-import InputNumber from "@component/inputNumber/inputNumber";
+import InputNumber from "@component/InputNumber/InputNumber";
 
 import "./index.scss";
 

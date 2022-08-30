@@ -1,6 +1,6 @@
 import { Control, Component } from "tes-work";
-import Radio from "@component/radio/radio";
-import RadioGroup from "@component/radio/radio-group";
+import Radio from "@component/Radio/Radio";
+import RadioGroup from "@component/Radio/RadioGroup";
 
 import "./index.scss"; 
 

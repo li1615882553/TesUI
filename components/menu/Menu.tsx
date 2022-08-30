@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { Control, Component, Watch } from "tes-work";
 import { IBaseComponent } from "../template/component";
 import MenuItem from "./MenuItem";
-import MenuGroup from "./MenuItemGroup";
+import MenuItemGroup from "./MenuItemGroup";
 
 import "./menu.scss";
 import SubMenu from "./SubMenu";
@@ -28,9 +28,13 @@ export interface IMenuProps extends IBaseComponent {
 
 @Component
 export class Menu extends Control<IMenuProps>{
+  static Item: typeof MenuItem;
+  static SubMenu: typeof SubMenu;
+  static ItemGroup: typeof MenuItemGroup;
+
   menuItems: { string?: MenuItem } = {};
   subMenus: { string?: SubMenu } = {};
-  menuGroups: { string?: MenuGroup } = {};
+  menuGroups: { string?: MenuItemGroup } = {};
   activeIndex: string;
   openedMenus: string[];
 

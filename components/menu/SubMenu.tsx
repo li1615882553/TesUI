@@ -3,7 +3,7 @@ import { IBaseComponent } from "../template/component";
 import classNames from "classnames";
 import Menu from "./Menu";
 import MenuItem from "./MenuItem";
-import Popup from "@component/popup/popup";
+import Popup from "@component/Popup/Popup";
 export interface ISubMenuProps extends IBaseComponent {
   /**submenu ID */
   index: string;

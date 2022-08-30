@@ -5,8 +5,8 @@ import { escapeRegexpString, getValueByPath } from "../utils/util";
 import { isObject } from "../utils/object/object";
 
 import "./option.scss"
-import OptionGroup from "./optionGroup";
-import Select from "./select";
+import OptionGroup from "./OptionGroup";
+import Select from "./Select";
 
 export interface IOptionsProps extends IBaseComponent {
   /**选项的值 */

@@ -1,6 +1,6 @@
 import {Control,VNode,Component,nextTick  } from "tes-work";
 import { IBaseComponent } from "../template/component";
-import { ICheckBoxProps } from "./checkbox";
+import { ICheckBoxProps } from "./Checkbox";
 
 export interface ICheckBoxGroupProps extends IBaseComponent {
   /**值 */

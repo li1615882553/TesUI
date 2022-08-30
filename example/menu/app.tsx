@@ -1,12 +1,12 @@
 
 import { Component, Control, Watch, nextTick } from "tes-work";
-import Menu from "@component/menu/Menu";
-import SubMenu from "@component/menu/SubMenu";
-import MenuItem from "@component/menu/MenuItem";
-import MenuItemGroup from "@component/menu/MenuItemGroup";
+import Menu from "@component/Menu/Menu";
+import SubMenu from "@component/Menu/SubMenu";
+import MenuItem from "@component/Menu/MenuItem";
+import MenuItemGroup from "@component/Menu/MenuItemGroup";
 
-import Row from "@component/grid/row";
-import Col from "@component/grid/col";
+import Row from "@component/Grid/Row";
+import Col from "@component/Grid/Col";
 
 @Component
 class Panel extends Control {

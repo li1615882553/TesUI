@@ -1,5 +1,5 @@
 import { Control, Component } from "tes-work";
-import RadioGroup from "./radio-group";
+import RadioGroup from "./RadioGroup";
 import { IBaseComponent } from "../template/component";
 
 export interface IRadioProps extends IBaseComponent {
@@ -17,6 +17,7 @@ export interface IRadioProps extends IBaseComponent {
 
 @Component
 class Radio extends Control<IRadioProps> {
+  static Group: typeof RadioGroup;
   _radioGroup: RadioGroup;
 
   get isGroup() {

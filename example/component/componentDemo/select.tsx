@@ -1,7 +1,7 @@
 import { Control, Component, Watch } from "tes-work";
-import Select from "@component/select/select";
-import Option from "@component/select/option";
-import OptionGroup from "@component/select/optionGroup";
+import Select from "@component/Select/Select";
+import Option from "@component/Select/Option";
+import OptionGroup from "@component/Select/OptionGroup";
 import "./index.scss";
 
 @Component

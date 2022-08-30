@@ -2,7 +2,7 @@ import { Control, Component, VNode } from "tes-work";
 import { IBaseComponent } from "../template/component";
 import { alignPos } from "../ux/align/align";
 import classNames from 'classnames';
-import Popup from "../popup/popup";
+import Popup from "../Popup/Popup";
 
 import "./ToolTip.scss";
 

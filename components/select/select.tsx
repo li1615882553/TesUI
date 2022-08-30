@@ -4,11 +4,11 @@ import { isObject } from "../utils/object/object";
 import { getValueByPath } from "../utils/util";
 
 import "./select.scss"
-import OptionGroup from "./optionGroup";
-import Input from "../input/input";
-import Popup from "../popup/popup";
-import Tag from "../tag/tag";
-import Option from "./option";
+import OptionGroup from "./OptionGroup";
+import Input from "../Input/Input";
+import Popup from "../Popup/Popup";
+import Tag from "../Tag/Tag";
+import Option from "./Option";
 
 export interface ISelectProps extends IBaseComponent {
   /**选项的值 */
@@ -46,6 +46,9 @@ export interface ISelectProps extends IBaseComponent {
 
 @Component
 class Select extends Control<ISelectProps> {
+  static Option: typeof Option;
+  static OptionGroup: typeof OptionGroup;
+
   hoverIndex: number = -1;
   visible: boolean = false;
   menuVisibleOnFocus: boolean = false;

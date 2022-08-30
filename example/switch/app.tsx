@@ -1,6 +1,6 @@
 
 import { Component, Control, Watch, nextTick } from "tes-work";
-import Switch from "@component/switch/switch";
+import Switch from "@component/Switch/Switch";
 
 @Component
 class Panel extends Control {

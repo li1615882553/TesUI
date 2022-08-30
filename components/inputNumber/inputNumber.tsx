@@ -1,6 +1,6 @@
 import { Control, Component, userDirectives } from "tes-work";
 import { IBaseComponent } from "../template/component";
-import Input from "../input/input";
+import Input from "../Input/Input";
 import classNames from 'classnames';
 import repeatClickDirective from "../utils/directives/repeatClick";
 
