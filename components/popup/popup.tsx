@@ -217,6 +217,8 @@ class Popup extends Control<IPopupProps> {
   }
 
   protected render() {
+    // const { className, style } = this.props;
+    // return VNode.create("div", { className, style, ...this.getTargetTriggerAction() }, this.$children)
     const lastPopContent = this.popContent;
     let child: VNode = this.$children[0];
     const { type = "event", className = '', content, appendToBody = true } = this.props;

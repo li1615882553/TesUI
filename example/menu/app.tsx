@@ -18,7 +18,7 @@ class Panel extends Control {
       <div>
         <Row>
           <Col span={4}>
-            <Menu ref={this.addRefs("menu")} defaultActive="1-1" onSelect={this.handleSelect}>
+            {/* <Menu ref={this.addRefs("menu")} defaultActive="1-1" onSelect={this.handleSelect}>
               <SubMenu index="1" title="导航一">
                 <MenuItemGroup title="分组一">
                   <MenuItem index="1-1">处理中心</MenuItem>
@@ -32,7 +32,7 @@ class Panel extends Control {
               <SubMenu index="2" title="导航二">
                 <MenuItem index="1-3" disabled>消息中心</MenuItem>
               </SubMenu>
-            </Menu>
+            </Menu> */}
           </Col>
           <Col span={8}>
             <Menu mode="horizontal" onSelect={this.handleSelect}>
@@ -47,7 +47,7 @@ class Panel extends Control {
                 </SubMenu>
               </SubMenu>
               <SubMenu index="2" title="导航二">
-                <MenuItem index="1-3" disabled>消息中心</MenuItem>
+                <MenuItem index="1-3">消息中心</MenuItem>
               </SubMenu>
             </Menu>
           </Col>

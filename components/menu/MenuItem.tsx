@@ -16,7 +16,7 @@ export class MenuItem extends Control<IMenuItemProps>{
   rootMenu: Menu;
   parentSubMenus:SubMenu[] = [];
   deep: number = 0;
-
+  
   //当前路径的所有path
   get indexPath(){
     let path = [this.props.index];
@@ -25,7 +25,10 @@ export class MenuItem extends Control<IMenuItemProps>{
     })
     return path;
   }
-
+  get active(){
+    const { index } = this.props;
+    return this.rootMenu.activeIndex === index;
+  }
   protected componentWillMount() {
     let parent = this.$parent;
     while (parent) {
@@ -36,6 +39,7 @@ export class MenuItem extends Control<IMenuItemProps>{
         break;
       } else if (parent instanceof SubMenu) {
         this.parentSubMenus.unshift(parent);
+        parent.addMenuItem(this);
         this.deep++;
       }
       parent = parent.$parent;
@@ -43,9 +47,13 @@ export class MenuItem extends Control<IMenuItemProps>{
   }
   protected componentWillDestory(): void {
     this.rootMenu.addMenuItem(this);
+    this.parentSubMenus.forEach(subMenu => {
+      subMenu.removeMenuItem(this);
+    })
   }
 
   handleChick(e:MouseEvent) {
+    console.log("MenuItem click")
     e.stopPropagation();
     const { disabled } = this.props;
     if (!disabled) {
@@ -60,7 +68,7 @@ export class MenuItem extends Control<IMenuItemProps>{
     const clsName = classNames(
       "t-menu-item", className,
       {
-        [`is-active`]: this.rootMenu.activeIndex === index,
+        [`is-active`]: this.active,
         [`is-disabled`]: disabled
       }
     )
