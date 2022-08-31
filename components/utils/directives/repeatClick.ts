@@ -1,4 +1,3 @@
-import { Control } from "tes-work";
 import { isEqual } from "../object/object";
 import { on, once } from "../../ux/dom/index";
 

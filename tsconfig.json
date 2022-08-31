@@ -20,10 +20,14 @@
     // "strict": true,
     "skipLibCheck": true,
     "noImplicitAny": false,
+    "baseUrl": ".",
     "paths": { //路劲别名配置
       "@component/*": [
-        "./components/*"
+        "components/*"
       ]
     },
-  }
+  },
+  "include": [
+    "components"
+  ]
 }

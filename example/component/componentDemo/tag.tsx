@@ -3,7 +3,7 @@ import Tag from "@component/Tag/Tag";
 import Input from "@component/Input/Input";
 import Button from "@component/Button/Button";
 
-import "./index.scss";
+;
 
 @Component
 class TagDemo extends Control {

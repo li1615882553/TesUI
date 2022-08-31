@@ -42,9 +42,9 @@ module.exports = {
           },
           {
             loader: 'ts-loader',
-            options: {
-              transpileOnly: true
-            }
+            // options: {
+            //   transpileOnly: true
+            // }
           }
         ]
       },

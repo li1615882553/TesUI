@@ -8,7 +8,7 @@ if (fs.existsSync(path.resolve(componentsPath, './index.tsx'))) {
 }
 
 let importStr = '';
-let exportStr = `export {\r\n`;
+let exportStr = `export default {\r\n`;
 allComponents.forEach((item) => {
     importStr += `import ${item} from './${item}';\r\n`;
     exportStr += `  ${item},\r\n`;

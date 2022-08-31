@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "outDir": "./lib/",
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react-native",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "declaration": true, // 是否生成声明文件
+    "declarationDir": "./lib/types/", // 声明文件打包的位置
+    "declarationMap": false, // 是否生成声明文件map文件（便于调试）
+    "lib": [
+      "dom",
+      "es2017"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "moduleResolution": "node",
+    // "strict": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "paths": { //路劲别名配置
+      "@component/*": [
+        "../components/*"
+      ]
+    },
+  },
+  "include": [
+    "components"
+  ]
+}

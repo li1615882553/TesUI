@@ -1,7 +1,7 @@
 import { Control, Component } from "tes-work";
 import Input from "@component/Input/Input";
 
-import "./index.scss";
+;
 
 @Component
 class InputDemo extends Control {
