@@ -1,12 +1,15 @@
 {
-  "name": "TesUI",
-  "version": "1.0.0",
-  "description": "",
-  "main": "",
+  "name": "tes-ui",
+  "version": "0.0.1",
+  "description": "A Component Library base on Tes.",
+  "main": "lib/tes-ui.common.js",
+  "typings": "lib/types/index.d.ts",
   "scripts": {
-    "build": "webpack --config build/webpack.prod.js --progress",
-    "build:theme": "node scripts/buildCssEntry && gulp build --gulpfile scripts/gulpfile.js ",
-    "build:components": "webpack --config build/webpack.components.js --progress"
+    "build:file": "node scripts/buildEntry",
+    "build:theme": "node scripts/buildCssEntry && gulp build --gulpfile scripts/gulpfile.js",
+    "build:components": "webpack --config build/webpack.components.js --progress",
+    "dist": "npm run clean && npm run build:file &&  webpack --config scripts/webpack.conf.js && webpack --config scripts/webpack.common.js && webpack --config scripts/webpack.component.js && npm run build:theme",
+    "clean": "rimraf lib "
   },
   "keywords": [
     "Tes",
@@ -14,12 +17,13 @@
     "UI"
   ],
   "author": "li1615882553",
-  "license": "ISC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/li1615882553/TesUI/issues"
+  },
   "dependencies": {
     "@types/classnames": "^2.3.1",
     "classnames": "^2.3.1",
-    "gulp-cssmin": "^0.2.0",
-    "gulp-sass": "^5.1.0",
     "tes-work": "^0.0.3"
   },
   "devDependencies": {
@@ -30,12 +34,14 @@
     "express": "^4.18.1",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^8.0.0",
+    "gulp-cssmin": "^0.2.0",
     "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.1.0",
     "mini-css-extract-plugin": "^2.6.1",
     "node-sass": "^7.0.1",
-    "sass": "^1.54.7",
     "sass-loader": "^13.0.2",
     "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.6",
     "ts-loader": "^9.3.1",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
@@ -43,4 +49,4 @@
     "webpack-hot-middleware": "^2.25.2",
     "webpack-merge": "^5.8.0"
   }
-}
+} 

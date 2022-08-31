@@ -11,7 +11,7 @@ import Switch from './Switch';
 import Tag from './Tag';
 import Tooltip from './Tooltip';
 
-export {
+export default {
   Button,
   Checkbox,
   Grid,

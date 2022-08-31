@@ -25,8 +25,5 @@
         "../components/*"
       ]
     },
-  },
-  "include": [
-    "components"
-  ]
+  }
 }
