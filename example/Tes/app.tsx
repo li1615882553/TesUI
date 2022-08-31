@@ -5,7 +5,7 @@ import Radio from "@component/Radio/Radio";
 import Checkbox from "@component/Checkbox/Checkbox";
 import CheckBoxGroup from "@component/Checkbox/CheckboxGroup";
 
-import "./app.scss";
+;
 @Component
 class Panel extends Control {
   public todoItem: string;

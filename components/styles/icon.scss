@@ -3,7 +3,7 @@
 @font-face {
   font-family: "iconfont";
   /* Project id  */
-  src: url('../#{$font-path}/iconfont.ttf') format('truetype');
+  src: url('./#{$font-path}/iconfont.ttf') format('truetype');
 }
 
 .iconfont {
