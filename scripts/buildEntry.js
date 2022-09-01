@@ -16,4 +16,4 @@ allComponents.forEach((item) => {
 importStr += `\r\n`;
 exportStr += `  };\r\n`;
 
-fs.writeFileSync(path.resolve(componentsPath, './index.tsx'), importStr + exportStr);
+fs.writeFileSync(path.resolve(componentsPath, './index.tsx'), importStr + exportStr.replace("default", "") + exportStr);

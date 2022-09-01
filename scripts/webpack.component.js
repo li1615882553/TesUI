@@ -20,8 +20,7 @@ module.exports = merge(webpackBaseConfig, {
       type: 'umd',
       export: 'default'
     },
-    globalObject: 'this',
-    clean: true
+    globalObject: 'this'
   },
   optimization: {
     minimize: false

@@ -40,7 +40,8 @@ module.exports = {
     ]
   },
   externals :{
-    "tes-work":"Tes"
+    "tes-work":"tes-work",
+    "classnames": "classnames"
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.jsx', '.js'],
