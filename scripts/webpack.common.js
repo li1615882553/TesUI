@@ -14,21 +14,11 @@ module.exports = merge(webpackBaseConfig, {
     filename: 'tes-ui.common.js',
     chunkFilename: '[id].js',
     library: {
-      name: "TesUI",
       export: 'default',
       type: "commonjs2"
     }
   },
   optimization: {
-    minimizer: [
-      new TerserPlugin({
-        extractComments:false,
-        terserOptions: {
-          output: {
-            comments: false
-          }
-        }
-      })
-    ]
+    minimize: false
   },
 });

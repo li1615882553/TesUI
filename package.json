@@ -4,6 +4,7 @@
   "description": "A Component Library base on Tes.",
   "main": "lib/tes-ui.common.js",
   "typings": "lib/types/index.d.ts",
+  "style": "lib/theme/index.css",
   "scripts": {
     "build:file": "node scripts/buildEntry",
     "build:theme": "node scripts/buildCssEntry && gulp build --gulpfile scripts/gulpfile.js",
