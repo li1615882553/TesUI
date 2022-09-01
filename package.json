@@ -1,6 +1,6 @@
 {
   "name": "tes-ui",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Component Library base on Tes.",
   "main": "lib/tes-ui.common.js",
   "typings": "lib/types/index.d.ts",
@@ -50,4 +50,4 @@
     "webpack-hot-middleware": "^2.25.2",
     "webpack-merge": "^5.8.0"
   }
-} 
+}
