@@ -11,6 +11,20 @@ import Switch from './Switch';
 import Tag from './Tag';
 import Tooltip from './Tooltip';
 
+export  {
+  Button,
+  Checkbox,
+  Grid,
+  Input,
+  InputNumber,
+  Menu,
+  Popup,
+  Radio,
+  Select,
+  Switch,
+  Tag,
+  Tooltip,
+  };
 export default {
   Button,
   Checkbox,
