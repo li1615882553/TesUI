@@ -3,7 +3,6 @@ const fs = require("fs");
 const componentsPath = path.resolve(__dirname, "../components/");
 const stylesPath = path.resolve(__dirname, "../components/styles");
 const allComponents = require("./components");
-let scssFiles = [];
 
 //如果存在 theme.index.scss 内容,则直接删除,重新生成
 if (fs.existsSync(path.resolve(stylesPath, './components.scss'))) {
@@ -11,17 +10,12 @@ if (fs.existsSync(path.resolve(stylesPath, './components.scss'))) {
 }
 
 //获取所有包含scss的文件夹
-allComponents.forEach(component => {
-  let stats = fs.statSync(path.join(componentsPath, component, "style/index.scss"));
-  if(stats.isFile()){
-    scssFiles.push(`../${component}/style/index.scss`)
-  }
-})
+allComponents.map(component => path.join(componentsPath, `${component}/${component}.scss`))
 
 let importStr = '';;
-scssFiles.forEach((item) => {
-  importStr += `@import '${item}';\r\n`;
+allComponents.forEach((item) => {
+  importStr += `@import '../${item}/${item}.scss';\r\n`;
 })
 importStr += `\r\n`;
 
-fs.writeFileSync(path.resolve(stylesPath, './components.scss'), importStr);
+fs.writeFileSync(path.resolve(stylesPath, './index.scss'), importStr);

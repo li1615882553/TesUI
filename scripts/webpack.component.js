@@ -2,18 +2,18 @@
 var path = require('path')
 var webpack = require('webpack')
 const { merge } = require('webpack-merge');
-const allComponents = require('../scripts/components')
+const allComponents = require('./components')
 const webpackBaseConfig = require('./webpack.base.js');
 
 module.exports = merge(webpackBaseConfig, {
-  mode: "none",
+  mode: 'production',
   entry: allComponents.reduce((entries, dir) => {
-    const fullDir = path.join(__dirname, path.join('../components', dir, './index.tsx'));
+    const fullDir = path.join(process.cwd(), path.join('./components', dir, './index.tsx'));
     entries[dir] = fullDir
     return entries;
   }, {}),
   output: {
-    path: path.resolve(__dirname, "../lib"),
+    path: path.resolve(process.cwd(), "./lib"),
     filename: '[name].js',
     library: {
       name: "[name]",
@@ -22,5 +22,8 @@ module.exports = merge(webpackBaseConfig, {
     },
     globalObject: 'this',
     clean: true
-  }
+  },
+  optimization: {
+    minimize: false
+  },
 });
