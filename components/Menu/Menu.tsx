@@ -93,7 +93,7 @@ export class Menu extends Control<IMenuProps>{
 
     onSelect && onSelect(index);
 
-    if(mode === "horizontal"){
+    if (mode === "horizontal") {
       this.openedMenus = [];
     }
   }
