@@ -1,25 +1,15 @@
 const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-
-  entry: fs.readdirSync(__dirname).reduce((entries, dir) => {
-    const fullDir = path.join(__dirname, dir);
-    let entry = path.join(fullDir, 'app.ts')
-    if (fs.statSync(fullDir).isDirectory() && fs.existsSync(entry)) {
-      entries[dir] = ['webpack-hot-middleware/client', entry]
-    } else if (fs.statSync(fullDir).isDirectory() && fs.existsSync(entry + 'x')) {
-      entries[dir] = ['webpack-hot-middleware/client', entry + 'x']
-    }
-    return entries;
-  }, {}),
-
+  entry: path.resolve(process.cwd(), "./example/index.tsx"),
   output: {
-    path: path.join(__dirname, '__build__'),
-    filename: '[name].js',
-    publicPath: '/__build__/'
+    path: path.resolve(process.cwd(), './build'),
+    filename: 'build.js',
+    clean: true
   },
 
   module: {
@@ -37,7 +27,7 @@ module.exports = {
                   { pragma: 'createElement' },   //将React.createElement 改为 createElement   替代编译JXS表达式时使用的函数
                 ],
               ],
-              plugins: ['../plugins/transform-jsx']
+              plugins: [path.resolve(process.cwd(), './plugins/transform-jsx')]
             },
           },
           {
@@ -51,6 +41,13 @@ module.exports = {
       {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader']
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
+      {
+
       }
     ]
   },
@@ -58,13 +55,23 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
     mainFiles: ['index'],
-    alias:{
+    alias: {
       "@component": path.resolve(__dirname, "../components")
     }
   },
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
-  ]
+    new HtmlWebpackPlugin({
+      template: path.resolve(process.cwd(), './example/index.html'),
+      favicon: path.resolve(process.cwd(), './example/favicon.ico'),
+    }),
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  devServer: {
+    historyApiFallback: true,
+    static: path.resolve(process.cwd(), './build'),
+    compress: false,
+    port: 8080,
+    hot: true,
+  },
 }
