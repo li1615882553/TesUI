@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
 const allComponents = require('./scripts/components')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: "none",
@@ -73,8 +73,9 @@ module.exports = {
   },
 
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name]/[name].css'
-    })
+    new HtmlWebpackPlugin({
+      template: path.resolve('./example/index.html'),
+      favicon: path.resolve('./example/favicon.ico'),
+    }),
   ]
 }
