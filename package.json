@@ -1,5 +1,5 @@
 {
-  "name": "tes-ui",
+  "name": "tesui",
   "version": "0.0.2",
   "description": "A Component Library base on Tes.",
   "main": "lib/tes-ui.common.js",
