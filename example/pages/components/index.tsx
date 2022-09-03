@@ -2,27 +2,23 @@
 import { Control, Component, VNode } from "tes-work";
 import { Menu } from '@component/index';
 import { dispatchRouter, Route, Router } from "../../components/Router/index";
-import Button from "./Button/index";
-import Grid from "./Grid/index";
-import Switch from "./Switch/index";
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 const MenuItem = Menu.Item;
 
 const Routers = [
-  { path: '#components/button', menu: 'button', component: <Button /> },
-  { path: '#components/grid', menu: 'grid', component: <Grid /> },
-  { path: '#components/input', menu: 'input', component: <Button /> },
-  { path: '#components/inputnumber', menu: 'inputnumber', component: <Button /> },
-  { path: '#components/select', menu: 'select', component: <Button /> },
-  { path: '#components/switch', menu: 'switch', component: <Switch /> },
-  { path: '#components/radio', menu: 'radio', component: <Button /> },
-  { path: '#components/checkbox', menu: 'checkbox', component: <Button /> },
-  { path: '#components/tag', menu: 'tag', component: <Button /> },
-  { path: '#components/menu', menu: 'menu', component: <Button /> },
-  { path: '#components/tooltip', menu: 'tooltip', component: <Button /> },
-
+  { path: '#components/button', menu: 'button', component: () => import (/* webpackChunkName: "ui-Button" */"./Button/index") },
+  { path: '#components/grid', menu: 'grid', component: () => import (/* webpackChunkName: "ui-Grid" */"./Grid/index") },
+  { path: '#components/input', menu: 'input', component: () => import (/* webpackChunkName: "ui-Input" */"./Input/index") },
+  { path: '#components/inputnumber', menu: 'inputnumber', component: () => import (/* webpackChunkName: "ui-InputNumber" */"./InputNumber/index") },
+  { path: '#components/select', menu: 'select', component: () => import (/* webpackChunkName: "ui-Select" */"./Select/index") },
+  { path: '#components/switch', menu: 'switch', component: () => import (/* webpackChunkName: "ui-Switch" */"./Switch/index") },
+  { path: '#components/radio', menu: 'radio', component: () => import (/* webpackChunkName: "ui-Radio" */"./Radio/index") },
+  { path: '#components/checkbox', menu: 'checkbox', component: () => import (/* webpackChunkName: "ui-Checkbox" */"./Checkbox/index") },
+  { path: '#components/tag', menu: 'tag', component: () => import (/* webpackChunkName: "ui-Tag" */"./Tag/index") },
+  { path: '#components/menu', menu: 'menu', component:() => import (/* webpackChunkName: "ui-Menu" */"./Menu/index") },
+  { path: '#components/tooltip', menu: 'tooltip', component: () => import (/* webpackChunkName: "ui-Tooltip" */"./Tooltip/index") },
 ];
 
 const menuObj = [
@@ -34,7 +30,7 @@ const menuObj = [
   },
   {
     name: "Form", index: "FormItemGroup", children: [
-      { index: "Input", name: "Input(输入框)" },
+      { index: "Input", name: "Input（输入框）" },
       { index: "InputNumber", name: "InputNumber(计数器)" },
       { index: "Select", name: "Select(选择器)" },
       { index: "Switch", name: "Switch(开关)" },
@@ -70,9 +66,9 @@ export default class Components extends Control {
 
   render() {
     return (
-      <div>
+      <div className="TesUI-wrapper">
         <div className="wrapper-menu">
-          <Menu onSelect={this.handleSelect}>
+          <Menu onSelect={this.handleSelect} >
             <MenuItem index='install' >安装</MenuItem>
             <MenuItem index='start' >快速开始</MenuItem>
             <MenuItem index='logs' >更新日志</MenuItem>
@@ -83,6 +79,7 @@ export default class Components extends Control {
                     <MenuItemGroup title={menu.name} id={menu.index}>
                       {
                         menu.children.map((item) => {
+                          console.log(item.name)
                           return (
                             <MenuItem
                               index={item.index}
@@ -101,30 +98,16 @@ export default class Components extends Control {
         </div>
         <div className={`wrapper-container`}>
           <Router>
-            <MainLayout>
-              {
-                Routers.map((item) => {
-                  return (
-                    <Route path={item.path} component={item.component} />
-                  );
-                })
-              }
-            </MainLayout>
+            {
+              Routers.map((item) => {
+                return (
+                  <Route path={item.path} component={item.component} />
+                );
+              })
+            }
           </Router>
         </div>
       </div>
     );
-  }
-}
-
-
-@Component
-class MainLayout extends Control {
-  protected render(): void {
-    return (
-      <div>
-        {this.$children}
-      </div>
-    )
   }
 }

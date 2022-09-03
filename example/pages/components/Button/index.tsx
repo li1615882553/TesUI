@@ -1,10 +1,12 @@
 import { Control, Component } from "tes-work";
 
 @Component
-export default class ButtonPage extends Control {
+class ButtonPage extends Control {
   protected render(): void {
     return (
       <div>Button</div>
     )
+  }
 }
-}
+
+export default <ButtonPage />

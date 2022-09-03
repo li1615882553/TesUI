@@ -1,12 +1,12 @@
 import { Control, Component } from "tes-work";
 
 @Component
-class GridPage extends Control {
+class CheckboxPage extends Control {
   protected render(): void {
     return (
-      <div>Grid</div>
+      <div>Checkbox</div>
     )
   }
 }
 
-export default <GridPage />
+export default <CheckboxPage />

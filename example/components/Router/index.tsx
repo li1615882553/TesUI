@@ -1,6 +1,6 @@
 import { Control, Component, VNode } from "tes-work";
 
-//当前路由组件存储对象{ path : Component }
+//当前路由组件存储对象{ path : { Component,  } }
 let routers = {};
 
 /**
@@ -12,10 +12,9 @@ let listenEvents: { all?: Array<(pathname?: string) => void>, path?: Array<{ pat
 
 @Component
 export class Router extends Control {
-  protected render(): void {
-    let { className, style } = this.props;
+  protected render() {
     return (
-      <div className={className} style={style}>
+      <div>
         {this.$children}
       </div>
     )
@@ -48,7 +47,8 @@ interface RouterProps {
   className?: string,
   style?: string,
   path: string,
-  component: () => VNode | VNode
+  //支持组件懒加载
+  component: () => Promise<any> | VNode 
 }
 //路由监听路由并加载相应组件
 @Component
@@ -62,24 +62,22 @@ export class Route extends Control<RouterProps> {
     } else {
       routers[path] = component;
     }
-    console.log(routers)
   }
 
-  changeRouter() {
+  async changeRouter() {
     let hash = window.location.hash.split('?')[0];
     let { path } = this.props;
 
-    console.log(`hash: ${hash},  path: ${path}`)
-    //当前路由是选中路由时加载当前组件
-    if (hash === path && routers[hash]) {
+    //当前路由是选中路由时加载当前组件 或者是 当前组件的父组件
+    if ((hash === path || hash.startsWith(`${path}/`)) && routers[path]) {
       let renderItem;
-      if (typeof routers[hash] === 'function') {
-        renderItem = (routers[hash]())
+      if (typeof routers[path] === 'function') {
+        renderItem = (await routers[path]()).default
       } else {
-        renderItem = (routers[hash])
+        renderItem = (routers[path])
       }
       this.renderItem = renderItem;
-      callListen(hash);
+      hash === path && callListen(path);
     } else {
       //当前路由非选中路由 清空当前组件
       this.renderItem = null;
@@ -87,18 +85,17 @@ export class Route extends Control<RouterProps> {
   }
 
   protected componentMounted(): void {
-    this.initRouter();
-    window.addEventListener("load", () => this.changeRouter(), false);
-    window.addEventListener("hashchange", () => this.changeRouter(), false);
+    const { path } = this.props;
+    if (!routers[path]) {
+      this.initRouter();
+      window.addEventListener("load", () => this.changeRouter(), false);
+      window.addEventListener("hashchange", () => this.changeRouter(), false);
+    }
   }
 
-  protected render() {
+  render() {
     //如果不使用 div 包裹,则props等内容无法实现
-    return (
-      <div>
-        { this.renderItem }
-      </div>
-    )
+    return (this.renderItem)
   }
 }
 
@@ -108,7 +105,7 @@ export function dispatchRouter({ path = '', query = {} }) {
   for (let i in query) {
     queryStr.push(`${i}=${query[i]}`);
   }
-  window.location.hash = `${path}${queryStr.length ? '?'+queryStr.join('&'): ''}`;
+  window.location.hash = `${path}${queryStr.length ? '?' + queryStr.join('&') : ''}`;
 }
 
 /**

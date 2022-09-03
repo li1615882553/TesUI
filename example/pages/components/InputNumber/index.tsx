@@ -1,12 +1,11 @@
 import { Control, Component } from "tes-work";
 
 @Component
-class GridPage extends Control {
+class InputNumberPage extends Control {
   protected render(): void {
     return (
-      <div>Grid</div>
+      <div>InputNumber</div>
     )
   }
 }
-
-export default <GridPage />
+export default <InputNumberPage />

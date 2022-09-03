@@ -8,7 +8,8 @@ module.exports = {
   entry: path.resolve(process.cwd(), "./example/index.tsx"),
   output: {
     path: path.resolve(process.cwd(), './build'),
-    filename: 'build.js',
+    filename: 'js/index.js',
+    chunkFilename: 'js/[name:8].js',
     clean: true
   },
 
@@ -45,9 +46,6 @@ module.exports = {
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
-      },
-      {
-
       }
     ]
   },
