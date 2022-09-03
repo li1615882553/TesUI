@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "outDir": "./lib/",
-    "module": "es6",
-    "target": "es5",
+    "module": "esnext",
+    "target": "ES2016",
     "jsx": "react-native",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -25,5 +25,6 @@
         "../components/*"
       ]
     },
-  }
+  },
+  "types":["node"]
 }

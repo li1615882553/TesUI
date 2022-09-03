@@ -53,7 +53,6 @@ export class MenuItem extends Control<IMenuItemProps>{
   }
 
   handleChick(e:MouseEvent) {
-    console.log("MenuItem click")
     e.stopPropagation();
     const { disabled } = this.props;
     if (!disabled) {
