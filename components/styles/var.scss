@@ -85,8 +85,8 @@ $margin-x-small: .5rem !default;
 // 内边距
 $padding-y: 3px !default;
 $padding-x: 10px !default;
-$padding-y-large: 5px !default;
-$padding-x-large: 12px !default;
+$padding-y-large: 12px !default;
+$padding-x-large: 20px !default;
 $padding-y-small: 2px !default;
 $padding-x-small: 7px !default;
 
@@ -204,3 +204,14 @@ $menu-background-color: $white-color !default;
 $menu-item-font-color:$text-color !default;
 $menu-item-font-size: $font-size !default;
 $menu-item-hover-fill: $primary-color-light-9 !default;
+
+//collapse
+$collapse-border-color: $border-color-light !default;
+$collapse-header-height: 48px !default;
+$collapse-header-background-color: $white-color !default;
+$collapse-header-font-color: $text-color !default;
+$collapse-header-font-size: 13px !default;
+
+$collapse-content-background-color: $white-color !default;
+$collapse-content-font-size: 13px !default;
+$collapse-content-font-color: $text-color !default;

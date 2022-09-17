@@ -19,7 +19,7 @@
   transition: border-color ease-in-out $duration, background-color ease-in-out $duration;
 
   span{
-    padding: $padding-y $padding-x;
+    padding: $padding-y-large $padding-x-large;
   }
   
   &:hover,
@@ -52,7 +52,7 @@
       &:focus {
         color: $button-disabled-font-color;
         cursor: not-allowed;
-        background-color: $button-disabled-background-color;
+        background-color: $white-color;
         border-color: $button-disabled-border-color;
       }
     }
@@ -76,10 +76,11 @@
 
   @include when(round){
     border-radius: 20px;
-    padding: 12px 23px;
+    padding: 6px;
   }
 
   @include when(circle){
+    line-height: 100%;
     border-radius: 50%;
   }
 

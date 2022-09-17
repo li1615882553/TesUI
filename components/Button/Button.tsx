@@ -10,8 +10,6 @@ export interface IButtonProps extends IBaseComponent {
 
   type?: 'primary' | 'warning' | 'danger' | 'success' | 'default';
 
-  shape?: 'circle';
-
   size?: 'small' | 'large' | 'default';
 
   icon?: string,
@@ -20,7 +18,9 @@ export interface IButtonProps extends IBaseComponent {
 
   round?: boolean,
 
-  tail?: boolean
+  tail?: boolean,
+
+  circle?: boolean
 }
 
 @Component
@@ -39,14 +39,14 @@ class Button extends Control<IButtonProps> {
 
   protected render() {
     const {
-      className, style, loading, disabled, type, shape, icon, plain, size, round, tail, ...otherProps
+      className, style, loading, disabled, type, circle, icon, plain, size, round, tail, ...otherProps
     } = this.props;
     const preCls = "t-button";
     const btnCls = {
       [`${preCls}-${type}`]: type,
       [`${preCls}-${size}`]: !!size,
       [`is-disable`]: !!disabled,
-      [`is-circle`]: shape === 'circle',
+      [`is-circle`]: !!circle,
       [`is-round`]: !!round,
       [`is-plain`]: !!plain,
     }
@@ -64,7 +64,7 @@ class Button extends Control<IButtonProps> {
       >
         {!!loading ? <i className="iconfont icon-loading"></i> : ""}
         {!tail && !loading && icon ? <i className={`iconfont ${icon}`}></i> : null}
-        <span> {this.$children} </span>
+        {this.$children ? <span> {this.$children} </span> : null}
         {tail && !loading && icon ? <i className={`iconfont ${icon}`}></i> : null}
       </button>
     );

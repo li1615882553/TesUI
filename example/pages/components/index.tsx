@@ -19,6 +19,7 @@ const Routers = [
   { path: '#components/tag', menu: 'tag', component: () => import (/* webpackChunkName: "ui-Tag" */"./Tag/index") },
   { path: '#components/menu', menu: 'menu', component:() => import (/* webpackChunkName: "ui-Menu" */"./Menu/index") },
   { path: '#components/tooltip', menu: 'tooltip', component: () => import (/* webpackChunkName: "ui-Tooltip" */"./Tooltip/index") },
+  { path: '#components/collapse', menu: 'collapse', component: () => import (/* webpackChunkName: "ui-Tooltip" */"./Collapse/index") },
 ];
 
 const menuObj = [
@@ -50,7 +51,8 @@ const menuObj = [
   },
   {
     name: "Others", index: "OthersItemGroup", children: [
-      { index: "Tooltip", name: "Tooltip(文字提示)" }
+      { index: "Tooltip", name: "Tooltip(文字提示)" },
+      { index: "Collapse", name: "Collapse(折叠面板)" }
     ]
   }
 ];

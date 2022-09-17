@@ -1,5 +1,6 @@
 import Button from './Button';
 import Checkbox from './Checkbox';
+import Collapse from './Collapse';
 import Grid from './Grid';
 import Input from './Input';
 import InputNumber from './InputNumber';
@@ -14,6 +15,7 @@ import Tooltip from './Tooltip';
 export  {
   Button,
   Checkbox,
+  Collapse,
   Grid,
   Input,
   InputNumber,
@@ -28,6 +30,7 @@ export  {
 export default {
   Button,
   Checkbox,
+  Collapse,
   Grid,
   Input,
   InputNumber,

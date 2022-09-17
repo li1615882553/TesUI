@@ -46,4 +46,4 @@ const Routers = [
 ```
 
 ## 部分截图
-![avatar](./screenshots/Tesui.png)
+![avatar](./screenshots/button.png)
